@@ -1,10 +1,12 @@
 package ma.showmaker.pollingbackend.model;
 
+import ma.showmaker.pollingbackend.model.utils.DateProp;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "votes")
-public class Vote {
+public class Vote extends DateProp{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
