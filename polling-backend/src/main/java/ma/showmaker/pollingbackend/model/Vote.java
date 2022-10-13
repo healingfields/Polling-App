@@ -20,6 +20,18 @@ public class Vote extends DateProp{
     @JoinColumn(name = "choice_id", nullable = false)
     private Choice choice;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
