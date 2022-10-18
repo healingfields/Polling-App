@@ -1,13 +1,14 @@
 package ma.showmaker.pollingbackend.model;
 
 import ma.showmaker.pollingbackend.model.utils.DateProp;
+import ma.showmaker.pollingbackend.model.utils.UserDateAudit;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "polls")
-public class Poll extends DateProp {
+public class Poll extends UserDateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,4 +46,14 @@ public class Poll extends DateProp {
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
     }
+
+    public void addChoice(Choice choice){
+        choices.add(choice);
+        choice.setPoll(this);
+    }
+    public void removeChoice(Choice choice){
+        choices.remove(choice);
+        choice.setPoll(null);
+    }
+
 }
