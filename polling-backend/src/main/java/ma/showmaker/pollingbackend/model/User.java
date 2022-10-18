@@ -2,17 +2,15 @@ package ma.showmaker.pollingbackend.model;
 
 import ma.showmaker.pollingbackend.model.utils.DateProp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends DateProp {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -20,6 +18,12 @@ public class User extends DateProp {
     private String email;
 
     private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+                joinColumns = @JoinColumn(name = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public User() {
     }
@@ -33,6 +37,14 @@ public class User extends DateProp {
 
     public Long getId() {
         return id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setId(Long id) {
