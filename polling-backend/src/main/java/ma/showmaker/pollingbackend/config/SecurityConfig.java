@@ -46,11 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
-
     @Bean
     @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
