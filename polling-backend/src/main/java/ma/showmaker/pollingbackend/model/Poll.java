@@ -4,6 +4,7 @@ import ma.showmaker.pollingbackend.model.utils.DateProp;
 import ma.showmaker.pollingbackend.model.utils.UserDateAudit;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,16 @@ public class Poll extends UserDateAudit {
                 orphanRemoval = true
     )
     private List<Choice> choices;
+
+    private Instant expirationDateTime;
+
+    public Instant getExpirationDateTime() {
+        return expirationDateTime;
+    }
+
+    public void setExpirationDateTime(Instant expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
+    }
 
     public Long getId() {
         return id;
