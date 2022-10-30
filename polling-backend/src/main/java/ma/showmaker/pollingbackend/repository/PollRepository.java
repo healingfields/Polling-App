@@ -2,6 +2,7 @@ package ma.showmaker.pollingbackend.repository;
 
 import ma.showmaker.pollingbackend.model.Poll;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,6 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
 
     List<Poll> findByIdIn(List<Long> pollIds, Sort sort);
 
-    //TODO
-    // created by
+    Page<Poll> findByCreatedBy(Long userId, Pageable pageable);
+    long countByCreatedBy(Long userId);
 }
