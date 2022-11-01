@@ -145,6 +145,26 @@ public class PollService {
         return creatorMap;
     }
 
+    public PollResponse getPollById(Long pollId, UserPrincipal currentUser){
+        Poll poll = pollRepository.findById(pollId).orElseThrow(() ->
+            new ResourceNotFoundException("Poll", "id", pollId));
+
+        List<ChoiceVoteCount> votes = voteRepository.countByPollIdAndGroupByChoiceId(pollId);
+
+        Map<Long, Long> choiceVotesMap = votes.stream()
+                .collect(Collectors.toMap(ChoiceVoteCount::getChoiceId, ChoiceVoteCount::getVoteCount));
+
+        User creator = userRepository.findById(poll.getCreatedBy())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", poll.getCreatedBy()));
+
+        Vote userVote = null;
+        if(currentUser != null){
+            userVote = voteRepository.findByUserIdAndPollId(currentUser.getId(), pollId);
+        }
+
+        return ModelMapper.mapPollToPollResponse(poll, choiceVotesMap, creator, userVote != null ? userVote.getChoice().getId(): null);
+    }
+
     private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds){
             List<ChoiceVoteCount> votes = voteRepository.countByPollIdInGroupByChoiceId(pollIds);
 
