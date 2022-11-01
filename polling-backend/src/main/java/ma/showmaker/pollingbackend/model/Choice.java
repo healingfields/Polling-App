@@ -16,6 +16,10 @@ public class Choice {
     @JoinColumn(name = "poll_id", nullable = false)
     private Poll poll;
 
+    public Choice(String answer) {
+        this.answer = answer;
+    }
+
     public Poll getPoll() {
         return poll;
     }
