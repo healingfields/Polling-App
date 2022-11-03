@@ -32,7 +32,7 @@ public class UserController {
 
 
     @GetMapping("/user/me")
-    @PreAuthorize("ROLE_USER")
+    @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal userPrincipal){
         UserSummary profile = new UserSummary(userPrincipal.getId(), userPrincipal.getUsername(), userPrincipal.getName());
         return profile;
@@ -41,13 +41,13 @@ public class UserController {
     @GetMapping("/user/checkUsernameAvailability")
     public UserIdentity checkUsernameAvailability(@RequestParam("username") String username){
             boolean isAvailable = userRepository.existsByUsername(username);
-            return new UserIdentity(isAvailable);
+            return new UserIdentity(!isAvailable);
     }
 
     @GetMapping("/user/checkEmailAvailability")
     public UserIdentity checkEmailAvailability(@RequestParam("email") String email){
         boolean isAvailable = userRepository.existsByEmail(email);
-        return new UserIdentity(isAvailable);
+        return new UserIdentity(!isAvailable);
     }
 
     @GetMapping("/user/{username}")
@@ -69,11 +69,11 @@ public class UserController {
         return pollService.getPollsCreatedBy(username, currentUser, page, size);
     }
 
-    @GetMapping("/users/{username}/votes")
+    @GetMapping("/user/{username}/votes")
     public PagedResponse<PollResponse> getPollsVotedBy(@PathVariable(value = "username") String username,
                                                        @CurrentUser UserPrincipal currentUser,
-                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int page,
-                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER)int size){
+                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE)int size){
         return pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 
