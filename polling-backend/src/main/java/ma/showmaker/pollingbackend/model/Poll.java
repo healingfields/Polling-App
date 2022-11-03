@@ -2,9 +2,12 @@ package ma.showmaker.pollingbackend.model;
 
 import ma.showmaker.pollingbackend.model.utils.DateProp;
 import ma.showmaker.pollingbackend.model.utils.UserDateAudit;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +25,8 @@ public class Poll extends UserDateAudit {
                 fetch = FetchType.EAGER,
                 orphanRemoval = true
     )
-    private List<Choice> choices;
+    @Fetch(FetchMode.SELECT)
+    private List<Choice> choices = new ArrayList<>();
 
     private Instant expirationDateTime;
 

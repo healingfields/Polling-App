@@ -12,12 +12,16 @@ public class Choice {
 
     private String answer;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "poll_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "poll_id", nullable = true)
     private Poll poll;
 
     public Choice(String answer) {
         this.answer = answer;
+    }
+
+    public Choice() {
+
     }
 
     public Poll getPoll() {

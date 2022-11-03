@@ -112,8 +112,9 @@ public class PollService {
         Page<Long> userVotedPollIds = voteRepository.findVotedPollIdsByUserId(user.getId(), pageable);
 
         if(userVotedPollIds.getNumberOfElements() == 0){
-            return new PagedResponse<>(Collections.emptyList(), userVotedPollIds.getNumber(), userVotedPollIds.getSize(),
-                    userVotedPollIds.getTotalElements(), userVotedPollIds.getTotalPages(), userVotedPollIds.isLast());
+            return new PagedResponse<>(Collections.emptyList(), userVotedPollIds.getNumber(),
+                    userVotedPollIds.getSize(), userVotedPollIds.getTotalElements(),
+                    userVotedPollIds.getTotalPages(), userVotedPollIds.isLast());
         }
 
         List<Long> pollIds = userVotedPollIds.getContent();
