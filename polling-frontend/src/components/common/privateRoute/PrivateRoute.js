@@ -5,3 +5,4 @@ export const PrivateRoute = () => {
     <div>PrivateRoute</div>
   )
 }
+export default PrivateRoute;
