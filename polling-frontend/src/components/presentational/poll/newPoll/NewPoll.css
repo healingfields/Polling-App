@@ -1,0 +1,10 @@
+.new-poll-container{
+    max-width: 50%;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.page-title{
+    text-transform: capitalize;
+    font-size: 2em;;
+    font-weight: bold;
+}

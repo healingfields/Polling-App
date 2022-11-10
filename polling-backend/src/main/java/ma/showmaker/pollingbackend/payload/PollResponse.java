@@ -10,7 +10,7 @@ public class PollResponse {
     private List<ChoiceResponse> choices;
     private UserSummary createdBy;
     private Instant creationDateTime;
-    private Instant expirattionDateTime;
+    private Instant expirationDateTime;
     private Boolean isExpired;
 
 
@@ -58,11 +58,11 @@ public class PollResponse {
     }
 
     public Instant getExpirattionDateTime() {
-        return expirattionDateTime;
+        return expirationDateTime;
     }
 
     public void setExpirattionDateTime(Instant expirattionDateTime) {
-        this.expirattionDateTime = expirattionDateTime;
+        this.expirationDateTime = expirattionDateTime;
     }
 
     public Boolean getExpired() {
