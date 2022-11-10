@@ -15,7 +15,7 @@ import java.util.List;
 public class Poll extends UserDateAudit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String question;

@@ -2,21 +2,23 @@ import React from 'react';
 import {Button, Col, Form, Input, Row, Select} from 'antd';
 import './NewPoll.css';
 import { useState } from 'react';
+import { createPoll } from '../../../../util/ApiUtils';
+import { redirect } from 'react-router-dom';
 
 const {TextArea} = Input;
 
 const daysOptions = [];
-for(let i=1; i<8; i++){
+for(let i=1; i<8; i++){   
   daysOptions.push({
-    label: i.toString(),
-    value: i.toString()
+    label: i,
+    value: i
   })
 }
 const hoursOptions = [];
 for(let i=1; i<25; i++){
   hoursOptions.push({
-    label: i.toString(),
-    value: i.toString()
+    label: i,
+    value: i
   })
 }
 
@@ -24,9 +26,7 @@ function NewPoll() {
   
 
   const [poll, setpoll] = useState({
-    question:{
-      text:''
-    },
+    question:'',
     choices:[{
       text:''
     },{
@@ -38,10 +38,10 @@ function NewPoll() {
     }
   })
   console.log(poll);
-  const validateQuestion = (questionText) => {
-    if(questionText.length === 0){
+  const validateQuestion = (question) => {
+    if(question.length === 0){
       console.log("u need to provide more");
-    }else if (questionText.length > 50) {
+    }else if (question.length > 50) {
       console.log("thats too much");
   } else {
       console.log("successfully set the question");
@@ -52,10 +52,7 @@ function NewPoll() {
     validateQuestion(value);
     setpoll({
       ...poll,
-      question:{
-        text:value
-      },
-      
+      question:value,
     })
     
   }
@@ -93,6 +90,23 @@ function NewPoll() {
   }
 
   //TODO handle Submit
+  const handleSubmit = (event) =>{
+    console.log("clicked");
+    // event.preventDefault();
+
+    createPoll(poll)
+      .then(response => {
+        redirect("/");
+      }).catch(error =>{
+        if(error.status === 401){
+          redirect("/login")
+        }
+        else{
+          console.log("something went wrong");
+        }
+      })
+
+  } 
   
   return (
     <div className='new-poll-container' justify="start">
@@ -101,11 +115,12 @@ function NewPoll() {
         
         <div className='new-poll-content'>
         <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
-      autoComplete="off"
+        onFinish={handleSubmit}
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        autoComplete="off"
     >
       <Form.Item
         rules={[{ required: true, message: 'Please input your username!' }]}
@@ -153,8 +168,13 @@ function NewPoll() {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" size='large' shape='round' style={{width:'100%'}}>
-          Submit
+        <Button type="primary"
+                htmlType="submit"
+                size='large'
+                shape='round'
+                style={{width:'100%'}}
+                >
+          Create Poll
         </Button>
       </Form.Item>
     </Form>
