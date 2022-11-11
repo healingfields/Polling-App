@@ -32,7 +32,31 @@ const Poll = () => {
         return remainingTime;
     }
 
+    const getWinningChoice = () =>{
+        return props.poll.choices.reduce((prevChoice, currentChoice) => {
+            currentChoice.voteCount > prevChoice.voteCount ? currentChoice : prevChoice;
+        });
+    }
+    const pollChoices = [];
+    if(props.poll.selectedChoice || props.poll.expired){
+        const winningChoice = props.poll.expired ? getWinningChoice() : null;
 
+        props.poll.choices.forEach(choice => {
+            pollChoices.push(
+                <CompletedOrVotedPollChoice
+                    key={choice.id}
+                    choice={choice}
+                    isWinner={winningChoice && choice.id === winningChoice.id}
+                    isSelected = {isSelected(choice)}
+                    percentVote = {calculatePercentage(choice)}
+                />
+            );
+        })
+    }else{
+        props.poll.choices.forEach(choice => {
+            pollChoices.push(<Radio value={choice.id} key={choice.id}>{choice.text}</Radio>)
+        })
+    }
     return(
         <div className='poll-content'>
             <div className='poll-header'>
@@ -58,9 +82,7 @@ const Poll = () => {
             </div>
             <div className='poll-choices'>
                 <Radio.Group>
-                    {
-
-                    }
+                        {pollChoices}
                 </Radio.Group>
             </div>
             <div className='poll-footer'>
