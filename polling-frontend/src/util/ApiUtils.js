@@ -14,7 +14,7 @@ const request = (options) => {
     const defaults = {headers: headers};
     //merging the defaults with the given options
     options = Object.assign({}, defaults, options)
-
+    console.log("request");
     return fetch(options.url, options)
     .then(response => {
         response.json().then(json=>{
@@ -39,6 +39,7 @@ export function getAllPolls(page, size){
 
 //function that creates a poll
 export function createPoll(pollData){
+    console.log("create poll ");
     return request({
         url: API_BASE_URL + "/polls",
         method: 'POST', 

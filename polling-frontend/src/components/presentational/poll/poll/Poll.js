@@ -10,8 +10,26 @@ const Poll = () => {
         const now = new Date().getTime();
 
         //Todo 
+        let difference_ms = expirationTime - now
+        let seconds = Math.floor((difference_ms/1000) % 60);
+        let minutes = Math.floor((difference_ms /100/60) % 60);
+        let hours = Math.floor((difference_ms/(1000*60*60)) % 24);
+        let days = Math.floor((difference_ms/(1000*60*60*24)));
 
+        let remainingTime;
+        if(days > 0){
+            remainingTime = days + " days Left"
+        }else if( hours > 0){
+            remainingTime = hours + " hours left"
+        }else if(minutes > 0){
+            remainingTime = minutes + " minutes left";
+        }else if (seconds > 0) {
+            remainingTime = seconds + " seconds left"
+        }else {
+            remainingTime = "less than a second left "
+        }
 
+        return remainingTime;
     }
 
 
