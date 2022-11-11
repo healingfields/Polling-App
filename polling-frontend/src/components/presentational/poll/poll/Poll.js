@@ -5,11 +5,20 @@ import { Link } from 'react-router-dom'
 
 const Poll = () => {
 
+    const isSelected = (choice) => {
+        return props.poll.selectedChoice.id === choice.id;
+    }
+
+    const calculatePercentage = (choice) => {
+        if(props.poll.totalVotes === 0){
+            return 0;
+        }
+        return (choice.voteCount*100)/(props.poll.totalVotes);
+    }
     getRemainingTime = (poll) => {
         const expirationTime = new Date(poll.expirationDateTime).getTime();
         const now = new Date().getTime();
-
-        //Todo 
+        
         let difference_ms = expirationTime - now
         let seconds = Math.floor((difference_ms/1000) % 60);
         let minutes = Math.floor((difference_ms /100/60) % 60);
@@ -127,3 +136,5 @@ const CompletedOrVotedPollChoice = (props) => {
         </div>
     )
 }
+
+export default Poll;
