@@ -3,7 +3,8 @@ import { Avatar, Button, Radio } from 'antd'
 import { Link } from 'react-router-dom'
 
 
-const Poll = () => {
+
+const Poll = (props) => {
 
     const isSelected = (choice) => {
         return props.poll.selectedChoice.id === choice.id;
@@ -15,7 +16,7 @@ const Poll = () => {
         }
         return (choice.voteCount*100)/(props.poll.totalVotes);
     }
-    getRemainingTime = (poll) => {
+    const getRemainingTime = (poll) => {
         const expirationTime = new Date(poll.expirationDateTime).getTime();
         const now = new Date().getTime();
         
@@ -42,9 +43,9 @@ const Poll = () => {
     }
 
     const getWinningChoice = () =>{
-        return props.poll.choices.reduce((prevChoice, currentChoice) => {
-            currentChoice.voteCount > prevChoice.voteCount ? currentChoice : prevChoice;
-        });
+        return props.poll.choices.reduce((prevChoice, currentChoice) => 
+            currentChoice.voteCount > prevChoice.voteCount ? currentChoice : prevChoice
+        );
     }
     const pollChoices = [];
     if(props.poll.selectedChoice || props.poll.expired){
