@@ -3,13 +3,23 @@ import { Avatar, Button, Radio } from 'antd'
 import { Link } from 'react-router-dom'
 
 
-const Poll = () => {
 
-    getRemainingTime = (poll) => {
+const Poll = (props) => {
+
+    const isSelected = (choice) => {
+        return props.poll.selectedChoice.id === choice.id;
+    }
+
+    const calculatePercentage = (choice) => {
+        if(props.poll.totalVotes === 0){
+            return 0;
+        }
+        return (choice.voteCount*100)/(props.poll.totalVotes);
+    }
+    const getRemainingTime = (poll) => {
         const expirationTime = new Date(poll.expirationDateTime).getTime();
         const now = new Date().getTime();
-
-        //Todo 
+        
         let difference_ms = expirationTime - now
         let seconds = Math.floor((difference_ms/1000) % 60);
         let minutes = Math.floor((difference_ms /100/60) % 60);
@@ -32,7 +42,31 @@ const Poll = () => {
         return remainingTime;
     }
 
+    const getWinningChoice = () =>{
+        return props.poll.choices.reduce((prevChoice, currentChoice) => 
+            currentChoice.voteCount > prevChoice.voteCount ? currentChoice : prevChoice
+        );
+    }
+    const pollChoices = [];
+    if(props.poll.selectedChoice || props.poll.expired){
+        const winningChoice = props.poll.expired ? getWinningChoice() : null;
 
+        props.poll.choices.forEach(choice => {
+            pollChoices.push(
+                <CompletedOrVotedPollChoice
+                    key={choice.id}
+                    choice={choice}
+                    isWinner={winningChoice && choice.id === winningChoice.id}
+                    isSelected = {isSelected(choice)}
+                    percentVote = {calculatePercentage(choice)}
+                />
+            );
+        })
+    }else{
+        props.poll.choices.forEach(choice => {
+            pollChoices.push(<Radio value={choice.id} key={choice.id}>{choice.text}</Radio>)
+        })
+    }
     return(
         <div className='poll-content'>
             <div className='poll-header'>
@@ -58,9 +92,7 @@ const Poll = () => {
             </div>
             <div className='poll-choices'>
                 <Radio.Group>
-                    {
-
-                    }
+                        {pollChoices}
                 </Radio.Group>
             </div>
             <div className='poll-footer'>
@@ -105,3 +137,5 @@ const CompletedOrVotedPollChoice = (props) => {
         </div>
     )
 }
+
+export default Poll;
