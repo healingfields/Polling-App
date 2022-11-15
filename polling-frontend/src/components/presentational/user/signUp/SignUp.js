@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import './SignUp.css'
 import { Button, Checkbox, Form, Input } from 'antd';
-import { Link, redirect } from 'react-router-dom';
-import {signup, checkUsernameAvailability, checkEmailAvailability} from '../../../../util/ApiUtils'
+import { Link, useNavigate } from 'react-router-dom';
+import {signUp, checkUsernameAvailability, checkEmailAvailability} from '../../../../util/ApiUtils'
 
 function SignUp() {
 
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name:{
       value:''
@@ -227,13 +228,13 @@ function SignUp() {
       email:user.email.value,
       password:user.password.value
     }
-    // signUp(signupRequest)
-    //   .then(response => {
-    //     console.log("user created");
-    //     redirect("/login");
-    //   }).catch(error=>{
-    //     console.log("something went wrong");
-    //   })
+    signUp(signupRequest)
+      .then(response => {
+        console.log("user created");
+        navigate("/login");
+      }).catch(error=>{
+        console.log("something went wrong");
+      })
   }
 
   
