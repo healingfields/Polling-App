@@ -2,26 +2,37 @@ import React, { useState } from 'react'
 import './SignUp.css'
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Link, redirect } from 'react-router-dom';
-import {signUp, checkUsernameAvailability} from '../../../../util/ApiUtils'
+import {signUp, checkUsernameAvailability, checkEmailAvailability} from '../../../../util/ApiUtils'
 
 function SignUp() {
 
   const [user, setUser] = useState({
-    name:{value:''},
-    username:{value:''},
-    email:{value:''},
-    password:{value:''}
+    name:{
+      value:''
+    },
+    username:{
+      value:''
+    },
+    email:{
+      value:''
+    },
+    password:{
+      value:''
+    }
   })
 
   const handleInputChange = (event, validationFunction) => {
     const target = event.target
     const inputName = target.name
     const inputValue = target.value
+    console.log('caalled');
 
     setUser({
+      ...user,
       [inputName]:{
-        value:inputValue,
-        ...validationFunction(inputName)
+        ...validationFunction(inputValue),
+        value:inputValue
+        
       }
     });
   }
@@ -66,8 +77,27 @@ function SignUp() {
       }
     }
     return {
-      validationStatus:'sucess',
+      validationStatus:'success',
       errorMsg: null
+    }
+  }
+
+  const validatePassword = (password) => {
+    if(password.length < 3){
+      return {
+        validationStatus: 'error',
+        errorMsg: 'password is too short (Minimum 3 characters needed)'
+      }
+    }else if(password.length > 15){
+      return {
+        validationStatus: 'error',
+        errorMsg: 'name is too long (Maximum 15 characters needed)'
+      }
+    }else{
+      return {
+        validationStatus: 'success',
+        errorMsg: null
+      }
     }
   }
 
@@ -96,35 +126,92 @@ function SignUp() {
       }
 
     setUser({
+      ...user,
       username:{
-        ...user,
         validationStatus:'validating',
         errorMsg:null
       }
     });
 
+
+
     checkUsernameAvailability(user.username.value)
       .then(response=>{
         if(response.available){
           setUser({
+            ...user,
             username:{
-              ...user,
               validationStatus:'success',
               errorMsg:null
             }
           })
         }else{
           setUser({
+            ...user,
             username:{
-              ...user,
               validationStatus:'error',
               errorMsg:'this username is already taken'
             }
           });
         }
       }).catch(error=>{
-        setUser
+        setUser({
+          ...user,
+          username:{
+            validationStatus:'error',
+            errorMsg:'error encountered when sending the request'
+          }
+        })
       })
+  }
+
+  const validateEmailAvailability = () => {
+    if(user.email.validationStatus === 'error'){
+      return;
+    }
+    setUser({
+      ...user,
+      email:{
+        validationStatus:'validating',
+        errorMsg:null
+      }
+    });
+    
+    checkEmailAvailability(user.email.value)
+      .then(response => {
+        if(response.available){        
+        setUser({
+          ...user,
+          email:{
+            validationStatus:'success',
+            errorMsg:null
+          }
+        })
+      }else{
+        setUser({
+          ...user,
+          email:{
+            validationStatus:'error',
+            errorMsg:'email already taken'
+          }
+        })
+      }
+      }).catch(error=>{
+        setUser({
+          ...user,
+          email:{
+            validationStatus:'error',
+            errorMsg:'error encountered when sending the request'
+          }
+        });
+      })
+  }
+
+  const isFormInvalid = () => {
+    return !(user.name.validationStatus === 'success' && 
+        user.email.validationStatus === 'success' && 
+        user.username.validationStatus === 'success' &&
+        user.password.validationStatus === 'success');
   }
 
   const handleSubmit = (event) => {
@@ -172,6 +259,7 @@ function SignUp() {
           size='large'
           placeholder='A unique username'
           value={user.username.value}
+          onBlur={validateUsernameAvailability}
           onChange={(event) =>handleInputChange(event, validateUsername)}/>
       </Form.Item>
       <Form.Item
@@ -184,6 +272,7 @@ function SignUp() {
           size='large'
           placeholder='Your email'
           value={user.email.value}
+          onBlur={validateEmailAvailability}
           onChange={(event) =>handleInputChange(event, validateEmail)}/>
       </Form.Item>
 
@@ -196,11 +285,14 @@ function SignUp() {
           size='large'
           name='password'
           placeholder='a password between 6 and 20 characters'
-          value={user.password.value} />
+          value={user.password.value}
+          onChange={event => handleInputChange(event, validatePassword)} />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit" size='large'>
+        <Button type="primary" htmlType="submit" size='large'
+                disabled={isFormInvalid()}
+                >
           Sing up
         </Button>
         Already registered<Link to="/login">  Login now!</Link>
