@@ -129,7 +129,8 @@ function SignUp() {
       ...user,
       username:{
         validationStatus:'validating',
-        errorMsg:null
+        errorMsg:null,
+        ...user.username,
       }
     });
 
@@ -142,7 +143,8 @@ function SignUp() {
             ...user,
             username:{
               validationStatus:'success',
-              errorMsg:null
+              errorMsg:null,
+              ...user.username,
             }
           })
         }else{
@@ -150,7 +152,8 @@ function SignUp() {
             ...user,
             username:{
               validationStatus:'error',
-              errorMsg:'this username is already taken'
+              errorMsg:'this username is already taken',
+              ...user.username
             }
           });
         }
@@ -159,7 +162,8 @@ function SignUp() {
           ...user,
           username:{
             validationStatus:'error',
-            errorMsg:'error encountered when sending the request'
+            errorMsg:'error encountered when sending the request',
+            ...user.username,
           }
         })
       })
@@ -172,6 +176,7 @@ function SignUp() {
     setUser({
       ...user,
       email:{
+        ...user.email,
         validationStatus:'validating',
         errorMsg:null
       }
@@ -183,6 +188,7 @@ function SignUp() {
         setUser({
           ...user,
           email:{
+            ...user.email,
             validationStatus:'success',
             errorMsg:null
           }
@@ -191,6 +197,7 @@ function SignUp() {
         setUser({
           ...user,
           email:{
+            ...user.email,
             validationStatus:'error',
             errorMsg:'email already taken'
           }
@@ -200,6 +207,7 @@ function SignUp() {
         setUser({
           ...user,
           email:{
+            ...user.email,
             validationStatus:'error',
             errorMsg:'error encountered when sending the request'
           }
