@@ -77,7 +77,7 @@ export function signUp(signUpData){
 //function that checks a user name availability
 export function checkUsernameAvailability(username){
     return request({
-        url: API_BASE_URL+ "user/checkUsernameAvailability?username=" + username,
+        url: API_BASE_URL+ "/user/checkUsernameAvailability?username=" + username,
         method: 'GET'
     });
 }
@@ -85,7 +85,7 @@ export function checkUsernameAvailability(username){
 //function that checks a user email availability
 export function checkEmailAvailability(email){
     return request({
-        url: API_BASE_URL + "user/checkEmailAvailability?email=" + email,
+        url: API_BASE_URL + "/user/checkEmailAvailability?email=" + email,
         method: 'GET'
     })
 }
