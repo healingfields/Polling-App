@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './SignUp.css'
 import { Button, Checkbox, Form, Input } from 'antd';
 import { Link, redirect } from 'react-router-dom';
-import {signUp, checkUsernameAvailability, checkEmailAvailability} from '../../../../util/ApiUtils'
+import {signup, checkUsernameAvailability, checkEmailAvailability} from '../../../../util/ApiUtils'
 
 function SignUp() {
 
@@ -25,14 +25,12 @@ function SignUp() {
     const target = event.target
     const inputName = target.name
     const inputValue = target.value
-    console.log('caalled');
 
     setUser({
       ...user,
       [inputName]:{
         ...validationFunction(inputValue),
         value:inputValue
-        
       }
     });
   }
@@ -128,44 +126,45 @@ function SignUp() {
     setUser({
       ...user,
       username:{
+        ...user.username,
         validationStatus:'validating',
         errorMsg:null,
-        ...user.username,
       }
     });
 
 
 
-    checkUsernameAvailability(user.username.value)
-      .then(response=>{
+    checkUsernameAvailability(user.username.value).then(response =>{ 
         if(response.available){
+          console.log(response.available);
           setUser({
             ...user,
             username:{
+              ...user.username,
               validationStatus:'success',
               errorMsg:null,
-              ...user.username,
             }
           })
         }else{
           setUser({
             ...user,
             username:{
+              ...user.username,
               validationStatus:'error',
               errorMsg:'this username is already taken',
-              ...user.username
             }
           });
         }
-      }).catch(error=>{
+      }).catch(error =>{
         setUser({
           ...user,
           username:{
+            ...user.username,
             validationStatus:'error',
             errorMsg:'error encountered when sending the request',
-            ...user.username,
           }
         })
+        console.log("error");
       })
   }
 
@@ -178,19 +177,18 @@ function SignUp() {
       email:{
         ...user.email,
         validationStatus:'validating',
-        errorMsg:null
+        errorMsg:null,
       }
     });
     
-    checkEmailAvailability(user.email.value)
-      .then(response => {
+    checkEmailAvailability(user.email.value).then(response =>{
         if(response.available){        
         setUser({
           ...user,
           email:{
             ...user.email,
             validationStatus:'success',
-            errorMsg:null
+            errorMsg:null,
           }
         })
       }else{
@@ -199,7 +197,7 @@ function SignUp() {
           email:{
             ...user.email,
             validationStatus:'error',
-            errorMsg:'email already taken'
+            errorMsg:'email already taken',
           }
         })
       }
@@ -209,7 +207,7 @@ function SignUp() {
           email:{
             ...user.email,
             validationStatus:'error',
-            errorMsg:'error encountered when sending the request'
+            errorMsg:'error encountered when sending the request',
           }
         });
       })
@@ -222,16 +220,20 @@ function SignUp() {
         user.password.validationStatus === 'success');
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    signUp(user)
-      .then(response => {
-        console.log("user created");
-        redirect("/login");
-      }).catch(error=>{
-        console.log("something went wrong");
-      })
-    
+  const handleSubmit = () => {
+    const signupRequest = {
+      name:user.name.value,
+      username:user.username.value,
+      email:user.email.value,
+      password:user.password.value
+    }
+    // signUp(signupRequest)
+    //   .then(response => {
+    //     console.log("user created");
+    //     redirect("/login");
+    //   }).catch(error=>{
+    //     console.log("something went wrong");
+    //   })
   }
 
   
@@ -300,7 +302,7 @@ function SignUp() {
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit" size='large'
                 disabled={isFormInvalid()}
-                >
+                > 
           Sing up
         </Button>
         Already registered<Link to="/login">  Login now!</Link>

@@ -16,14 +16,14 @@ const request = (options) => {
     options = Object.assign({}, defaults, options)
     console.log("request");
     return fetch(options.url, options)
-    .then(response => {
+    .then(response =>
         response.json().then(json=>{
             if(!response.ok){
                 return Promise.reject(json)
             }
             return json;
         })
-    })
+    )
 }
 
 //funtion that request all the polls paged 
@@ -68,7 +68,7 @@ export function login(loginData){
 //function that signs up a user
 export function signUp(signUpData){
     return request({
-        url:API_BASE_URL+ "/auth/signup",
+        url:API_BASE_URL+ "/auth/signUp",
         method: 'POST',
         body: JSON.stringify(signUpData)
     });
