@@ -59,7 +59,7 @@ export function castVote(voteData){
 //function that logs in a user 
 export function login(loginData){
     return request({
-        url: API_BASE_URL + "/auth/login",
+        url: API_BASE_URL + "/auth/signIn",
         method: 'POST', 
         body: JSON.stringify(loginData)
     })
