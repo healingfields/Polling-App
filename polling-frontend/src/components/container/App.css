@@ -1,1 +1,5 @@
 @import '~antd/dist/antd.css';
+
+.app-container{
+    height: 100vh;
+}
