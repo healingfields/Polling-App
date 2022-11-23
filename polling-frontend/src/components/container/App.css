@@ -3,3 +3,8 @@
 .app-container{
     height: 100vh;
 }
+
+.app-header{
+    height: 10%;
+    margin-bottom: 10%;
+}

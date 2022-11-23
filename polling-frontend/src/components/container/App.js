@@ -11,8 +11,9 @@ import { useState, useEffect } from 'react';
 import {getCurrentUser} from '../../util/ApiUtils';
 import { ACCESS_TOKEN } from '../../constants';
 import {Loader} from '../common/loader/Loader'
+import { Header } from '../common/header/Header';
 
-const {Header, Footer, Content} = Layout;
+const {Content, Footer} = Layout;
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
           
       })
   }
+
 
   const router = createBrowserRouter([
     {
@@ -93,10 +95,9 @@ function App() {
   return (
     
     <Layout className='app-container'>
-      <Header style={{textAlign:'center', color:'white'}}>Header</Header>
-     
+      <Header className='app-header'/>
     {!isLoading?
-      <Content>
+      <Content className='app-content'>
       <RouterProvider router={router}/>
       </Content>
      :
