@@ -91,7 +91,9 @@ export function checkEmailAvailability(email){
 }
 
 //function that gets the current user
-export function getCurrentUser(ACCESS_TOKEN){
+export function getCurrentUser(){
+    const token = localStorage.getItem(ACCESS_TOKEN)
+    console.log(token);
     if(!localStorage.getItem(ACCESS_TOKEN)){
         return Promise.reject("No access token set");
     }
