@@ -107,7 +107,7 @@ export function getCurrentUser(){
 //function that gets a user profile based on his username
 export function getUserProfile(username){
     return request({
-        url: API_BASE_URL + "/users/" + username,
+        url: API_BASE_URL + "/user/" + username,
         method: 'GET'
     })
 }
