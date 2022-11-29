@@ -1,38 +1,36 @@
 import { Layout, Menu } from 'antd'
 import './Header.css'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, HomeOutlined, QuestionCircleOutlined, PlusCircleOutlined, ProfileOutlined, LogoutOutlined, LoginOutlined, SignalFilled} from '@ant-design/icons';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, HomeOutlined, QuestionCircleOutlined, PlusCircleOutlined, ProfileOutlined, LogoutOutlined, LoginOutlined, SignalFilled, ProfileFilled} from '@ant-design/icons';
 import Login from '../../presentational/user/login/Login';
+import { AuthContext } from '../../../util/authProvider';
 
-export const Header = (props) => {
+export const Header = () => {
+
+  const {authData} = useContext(AuthContext);
 
   let menuItems;
-  if(props.currentUser){
+  if(authData.isAuthenticated){
      menuItems = [
       {
-        label: <a href='/'>Home</a>,
+        label: <Link to={"/"}>Home</Link>,
         key: '/',
         icon:<HomeOutlined/>,
       },
       {
-        label: <a href='/poll/new'>New Poll</a>,
+        label: <Link to={'/poll/new'}>New Poll</Link>,
         key: '/poll/new',
         icon:<PlusCircleOutlined/>,
       },
       {
-        label: <a href='/profile'>Profile</a>,
+        label: <Link to={'/profile/{username}'}>Profile</Link>,
         key: '/profile',
-        icon:<ProfileOutlined/>,
+        icon:<ProfileFilled/>,
         children:[
           {
-            label: '@ ' + props.currentUser.username,
-            key: 'user-info',
-            icon:<PlusCircleOutlined/>,
-          },
-          {
-            label: <a href={`/users/${props.currentUser.username}`}>Profile</a>,
-            key: 'profile',
+            label: <Link to={`/users/${authData.currentUser.username}`}>{authData.currentUser.username}</Link>,
+            key: '/users/{username}',
             icon:<PlusCircleOutlined/>,
           },
           {
@@ -46,12 +44,12 @@ export const Header = (props) => {
   }else{
     menuItems = [
       {
-        label: <a href='/login'>Login</a>,
+        label: <Link to={'/login'}>Login</Link>,
         key: '/login',
         icon:<LoginOutlined/>,
       },
       {
-        label: <a href='/signup'>Sign Up</a>,
+        label: <Link to={'/signup'}>Sign Up</Link>,
         key: '/signup',
         icon:<SignalFilled/>,
       }
@@ -62,9 +60,9 @@ export const Header = (props) => {
     <Layout.Header className='app-header'>
       <div className='container'>
         <div className='app-name'>
-          <a href='/'>
+          <Link to='/'>
           Who's Right?
-          </a>
+          </Link>
         </div>
         <Menu mode="horizontal" items={menuItems}>
 
