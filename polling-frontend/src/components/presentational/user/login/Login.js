@@ -1,25 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Login.css'
 import {Form, Button, Input} from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import {login} from '../../../../util/ApiUtils'
 import {ACCESS_TOKEN} from '../../../../constants/index'
+import { AuthContext } from '../../../../util/authProvider'
 
 
-function Login(props) {
+function Login() {
+
+  const {handleLogin, loadCurrentUser} = useContext(AuthContext);
 
   const navigate = useNavigate();
   const onFinish = (values) => {
     const loginRequest = Object.assign({}, values)
-    login(loginRequest)
-    .then(response => {
-      localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-      navigate("/");
-      props.handleLogin();
-      }).catch(error=>{
-      console.log("something went wrong");
-  })
+    handleLogin(loginRequest);
+    loadCurrentUser();
   };
 
   const onFinishFailed = (errorInfo) => {

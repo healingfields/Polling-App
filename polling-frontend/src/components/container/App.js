@@ -7,55 +7,28 @@ import Profile from '../presentational/user/profile/Profile';
 import PrivateRoute from '../common/privateRoute/PrivateRoute'
 import {createBrowserRouter, Route, RouterProvider, redirect} from 'react-router-dom'
 import { Layout} from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {getCurrentUser} from '../../util/ApiUtils';
 import { ACCESS_TOKEN } from '../../constants';
 import {Loader} from '../common/loader/Loader'
 import { Header } from '../common/header/Header';
+import { AuthContext, AuthProvider } from '../../util/authProvider';
 
 const {Content, Footer} = Layout;
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [currentUser, setCurrentUser] = useState({});
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogout = (redirectTo="/") =>{
-    localStorage.removeItem(ACCESS_TOKEN);
-
-    setCurrentUser(null);
-    setIsAuthenticated(false)
-
-    redirect(redirectTo);
-
-    //notification To add
+  const authData = {
+    isLoading:false
   }
-
-  const handleLogin = () => {
-    loadCurrentUser();
-    redirect("/");  
-  }
-
-  const loadCurrentUser = () => {
-    getCurrentUser()
-      .then(response => {
-        setCurrentUser(response);
-        setIsAuthenticated(true);
-        setIsLoading(false);
-      }).catch(error => {
-          
-      })
-  }
-
-
   const router = createBrowserRouter([
     {
       path:"/",
-      element: <PollList 
-                isAuthenticated={isAuthenticated}
-                currentUser={currentUser}
-                handleLogout={handleLogout}/>,
+      element: <PollList />,
       index:true
     },
     {
@@ -65,30 +38,24 @@ function App() {
     {
       path:"/login",
       element:<Login
-                handleLogin={handleLogin}
                />
     },
     {
       path:"users/:username",
       element:<Profile
-                isAuthenticated={isAuthenticated}
-                currentUser={currentUser}/>
+                />
     },
     {
       path:"/poll/new",
       element:
-        <PrivateRoute
-          isAuthenticated={isAuthenticated}
-          currentUser={currentUser}>
-          <NewPoll handleLogout={handleLogout}/>
+        <PrivateRoute>
+          <NewPoll/>
         </PrivateRoute>
     }
   ]);
 
 
-  useEffect(() => {
-    loadCurrentUser();
-  }, []);
+
 
 
 
@@ -96,9 +63,9 @@ function App() {
     
     <Layout className='app-container'>
       <Header className='app-header'/>
-    {!isLoading?
+    {!authData.isLoading?
       <Content className='app-content'>
-      <RouterProvider router={router}/>
+          <RouterProvider router={router}/>
       </Content>
      :
     <Loader/>
