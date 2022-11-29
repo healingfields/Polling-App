@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { AuthContext } from '../../../util/authProvider';
 
 export const PrivateRoute = (props) => {
   
   const navigate = useNavigate();
-  console.log(props.isAuthenticated);
+  const {authData} = useContext(AuthContext);
+  console.log(authData);
 
-  if(!props.isAuthenticated){
+  if(!authData.isAuthenticated){
     return <Navigate to="/login" />
   }
   return props.children;

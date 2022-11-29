@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ACCESS_TOKEN } from "../constants";
 import {login, getCurrentUser} from './ApiUtils'
 
@@ -17,9 +17,8 @@ export const AuthProvider = ({children}) => {
         .then(response => {
           localStorage.setItem(ACCESS_TOKEN, response.accessToken);
           setAuthData({
-            currentUser:{},
+            ...authData,
             isAuthenticated:true,
-            isLoading:false
           })
           }).catch(error=>{
           console.log("something went wrong");
@@ -30,15 +29,17 @@ export const AuthProvider = ({children}) => {
         getCurrentUser()
             .then(response => {
             setAuthData({
-            isAuthenticated:false,
+            ...authData,
             currentUser:response,
-            isLoading:false
             })
         }).catch(error => {
             console.log('something happened on the server');
         })
-
     }
+
+    useEffect(()=>{
+        loadCurrentUser();
+    },[authData.isAuthenticated])
 
     const handleLogout = () =>{
         localStorage.removeItem(ACCESS_TOKEN);

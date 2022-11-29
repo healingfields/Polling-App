@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './Login.css'
 import {Form, Button, Input} from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, redirect, useNavigate } from 'react-router-dom'
 import {login} from '../../../../util/ApiUtils'
 import {ACCESS_TOKEN} from '../../../../constants/index'
 import { AuthContext } from '../../../../util/authProvider'
@@ -10,13 +10,14 @@ import { AuthContext } from '../../../../util/authProvider'
 
 function Login() {
 
+  
   const {handleLogin, loadCurrentUser} = useContext(AuthContext);
 
   const navigate = useNavigate();
   const onFinish = (values) => {
     const loginRequest = Object.assign({}, values)
     handleLogin(loginRequest);
-    loadCurrentUser();
+    navigate("/")
   };
 
   const onFinishFailed = (errorInfo) => {
