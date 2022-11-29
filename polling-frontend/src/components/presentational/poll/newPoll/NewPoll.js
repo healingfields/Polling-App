@@ -124,8 +124,7 @@ function NewPoll() {
     >
       <Form.Item
         rules={[{ required: true, message: 'Please input your username!' }]}
-        style={{width:"500px"}}
-      >
+              >
         <TextArea rows={6} placeholder="Question" onChange={handleQuestionChange}/>
       </Form.Item>
       {poll.choices.map((choice, index)=>{
@@ -142,7 +141,7 @@ function NewPoll() {
         <Button type="dashed" >Add Choice</Button>
       </Form.Item>
 
-      <Col span={24} style={{marginBottom:'15px'}}>
+      <Col style={{marginBottom:'15px'}}>
           Poll Length
         </Col>
 

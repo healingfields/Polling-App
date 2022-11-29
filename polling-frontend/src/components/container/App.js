@@ -45,7 +45,9 @@ function App() {
         },
         {
           path:"/poll/new",
-          element:<NewPoll/>
+          element:<PrivateRoute>
+                <NewPoll/>
+            </PrivateRoute>
         }
       ]
     },

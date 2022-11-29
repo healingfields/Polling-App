@@ -24,7 +24,7 @@ export const Header = () => {
         icon:<PlusCircleOutlined/>,
       },
       {
-        label: <Link to={'/profile/{username}'}>Profile</Link>,
+        label: <span>Profile</span>,
         key: '/profile',
         icon:<ProfileFilled/>,
         children:[

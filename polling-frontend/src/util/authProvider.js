@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import {login, getCurrentUser} from './ApiUtils'
 
@@ -38,7 +39,9 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(()=>{
-        loadCurrentUser();
+        if(authData.isAuthenticated===true){
+            loadCurrentUser();
+        }
     },[authData.isAuthenticated])
 
     const handleLogout = () =>{

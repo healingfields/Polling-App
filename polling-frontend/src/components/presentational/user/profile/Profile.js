@@ -9,7 +9,7 @@ import { getUserProfile } from '../../../../util/ApiUtils';
 
 function Profile(props) {
   let {username} = useParams(); 
-  const [user, setUser] = useState({pollCount:32, voteCount:40});
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false)
 
   const loadProfile = (user_name) => {

@@ -9,15 +9,12 @@ import { AuthContext } from '../../../../util/authProvider'
 
 
 function Login() {
-
-  
-  const {handleLogin, loadCurrentUser} = useContext(AuthContext);
+  const {handleLogin, authData} = useContext(AuthContext);
 
   const navigate = useNavigate();
   const onFinish = (values) => {
     const loginRequest = Object.assign({}, values)
-    handleLogin(loginRequest);
-    navigate("/")
+    console.log(handleLogin(loginRequest))
   };
 
   const onFinishFailed = (errorInfo) => {
