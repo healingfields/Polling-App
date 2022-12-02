@@ -47,7 +47,7 @@ const PollList = (props) => {
       .then(response=>{
         setpolls({
           ...polls,
-          polls:[...polls.content, response.content],
+          content: response.content,
           page:response.page,
           size:response.size,
           totalElements:response.totalElements,
@@ -120,6 +120,7 @@ const PollList = (props) => {
     <div className='polls-container'>
        {
       polls.content.map((poll, index) => {
+        return(
         <Poll 
           key={poll.id}
           poll={poll}
@@ -127,6 +128,7 @@ const PollList = (props) => {
           handleVoteChange={(event)=>handleVoteChange(event, index)}
           handleVoteSubmit={(event)=>handleVoteSubmit(event,index)}
           />
+        )
       })
     }
       {

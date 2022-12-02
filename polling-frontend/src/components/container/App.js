@@ -30,6 +30,10 @@ function App() {
       // index:true,
       children:[
         {
+          path:'/',
+          element:<PollList/>
+        },
+        {
           path:"/signup",
           element:<SignUp/>
         },

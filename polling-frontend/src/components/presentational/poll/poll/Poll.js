@@ -1,6 +1,9 @@
 import { CheckCircleOutlined} from '@ant-design/icons'
-import { Avatar, Button, Radio } from 'antd'
+import { Avatar, Button, Divider, Radio } from 'antd'
 import { Link } from 'react-router-dom'
+import {Card} from 'antd'
+
+const {Meta} = Card;
 
 
 
@@ -64,37 +67,13 @@ const Poll = (props) => {
         })
     }else{
         props.poll.choices.forEach(choice => {
-            pollChoices.push(<Radio value={choice.id} key={choice.id}>{choice.text}</Radio>)
+            console.log(choice);
+            pollChoices.push(<Radio value={choice.id} key={choice.id}>{choice.answer}</Radio>)
         })
     }
     return(
         <div className='poll-content'>
-            <div className='poll-header'>
-                <div className='poll-creator-info'>
-                    <Link>
-                        <Avatar> 
-                            {props.poll.createdBy.name[0].toUpperCase()}
-                        </Avatar>
-                        <span>
-                            {props.poll.createdBy.name}
-                        </span>
-                        <span>
-                            {props.poll.createBy.username}
-                        </span>
-                        <span>
-                            {props.poll.creationDateTime}
-                        </span>
-                    </Link>
-                </div>
-                <div className='poll-question'>
-                    {props.poll.question}
-                </div>
-            </div>
-            <div className='poll-choices'>
-                <Radio.Group>
-                        {pollChoices}
-                </Radio.Group>
-            </div>
+
             <div className='poll-footer'>
                 {
                     !(props.poll.selectedChoice || props.poll.expired) ? 
@@ -111,6 +90,23 @@ const Poll = (props) => {
                     }
                 </span>
             </div>
+
+                    {/* TODO  card loading */}
+      <Card style={{ width: 500, marginTop: 16, backgroundColor:'lightGray', borderRadius:8 }} 
+            bordered={false}
+            >
+
+        <Meta
+          avatar={<Avatar >{props.poll.createdBy.name[0].toUpperCase()}</Avatar>}
+          title= {props.poll.createdBy.username}
+          description= {props.poll.creationDateTime}
+        />
+        <Divider type="horizontal"/>
+            <h3>{props.poll.question}</h3>
+            <div className='poll-choices'>
+                {pollChoices}
+            </div>
+      </Card>
             
         </div>  
     )
