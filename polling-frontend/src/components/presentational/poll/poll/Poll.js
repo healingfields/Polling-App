@@ -9,6 +9,7 @@ const {Meta} = Card;
 
 const Poll = (props) => {
 
+
     const isSelected = (choice) => {
         return props.poll.selectedChoice.id === choice.id;
     }
@@ -67,29 +68,13 @@ const Poll = (props) => {
         })
     }else{
         props.poll.choices.forEach(choice => {
-            console.log(choice);
             pollChoices.push(<Radio value={choice.id} key={choice.id}>{choice.answer}</Radio>)
         })
     }
     return(
         <div className='poll-content'>
 
-            <div className='poll-footer'>
-                {
-                    !(props.poll.selectedChoice || props.poll.expired) ? 
-                    (<Button>Vote</Button>):null
-                }
-                <span>
-                    {props.poll.totalVotes}
-                </span>
-                <span>.</span>
-                <span className='time-left'>
-                    {props.poll.exipred ? 
-                        "Final Results":
-                        getRemainingTime(props.poll)
-                    }
-                </span>
-            </div>
+
 
                     {/* TODO  card loading */}
       <Card style={{ width: 500, marginTop: 16, backgroundColor:'lightGray', borderRadius:8 }} 
@@ -104,7 +89,26 @@ const Poll = (props) => {
         <Divider type="horizontal"/>
             <h3>{props.poll.question}</h3>
             <div className='poll-choices'>
+                <Radio.Group onChange={props.handleVoteChange} value={props.currentVote} >
                 {pollChoices}
+                </Radio.Group>
+                
+            </div>
+            <div className='poll-footer'>
+                {
+                    !(props.poll.selectedChoice || props.poll.expired) ? 
+                    (<Button disabled={!props.currentVote===undefined} onClick={props.handleVoteSubmit}>Vote</Button>):null
+                }
+                <span>
+                    {props.poll.totalVotes}
+                </span>
+                <span>.</span>
+                <span className='time-left'>
+                    {props.poll.exipred ? 
+                        "Final Results":
+                        getRemainingTime(props.poll)
+                    }
+                </span>
             </div>
       </Card>
             

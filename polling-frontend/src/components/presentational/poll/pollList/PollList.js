@@ -1,16 +1,19 @@
 import { Button } from 'antd'
 import {PlusOutlined} from '@ant-design/icons'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 import {Loader} from '../../../common/loader/Loader'
 import Poll from '../poll/Poll'
 import {POLL_LIST_SIZE} from '../../../../constants'
 import {castVote, getAllPolls, getUserCreatedPolls, getUserVotedPolls} from '../../../../util/ApiUtils'
 import { useNavigate } from 'react-router-dom'
+import {AuthContext} from './../../../../util/authProvider'
 
 const PollList = (props) => {
 
+  
   const navigate = useNavigate();
+  const {authData} = useContext(AuthContext)
   const [polls, setpolls] = useState({
     content:[],
     page:0,
@@ -21,6 +24,8 @@ const PollList = (props) => {
     currentVotes:[],
     isLoading:false
   })
+
+  console.log(polls.currentVotes);
 
   const loadPollList = (page = 0, size = POLL_LIST_SIZE) => {
     let promise;
@@ -76,15 +81,20 @@ const PollList = (props) => {
   }
 
   const handleVoteChange = (event, index) =>{
+    console.log(index);
+    const currentVotes = polls.currentVotes.slice()
+    currentVotes[index] = event.target.value
+    
+    
     setpolls({
       ...polls,
-      currentVotes:[...polls.currentVotes, polls.currentVotes[index]=event.target.value]
+      currentVotes:currentVotes
     })
   }
 
   const handleVoteSubmit = (event, index) => {
     event.preventDefault();
-    if(!props.isAuthenticated){
+    if(!authData.isAuthenticated){
       navigate("/login");
       //TODO notification
       return;
