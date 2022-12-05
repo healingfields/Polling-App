@@ -9,7 +9,7 @@ import { getUserProfile } from '../../../../util/ApiUtils';
 
 function Profile(props) {
   let {username} = useParams(); 
-  const [user, setUser] = useState({pollCount:32, voteCount:40});
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false)
 
   const loadProfile = (user_name) => {
@@ -41,24 +41,24 @@ function Profile(props) {
           <div className='user-details'>
             <div className='user-avatar'>
             <Avatar style={{ backgroundColor: "black", verticalAlign: 'middle' }} size="large" gap={2}>
-              {user.name[0].toUpperCase()}
+              {user.name}
           </Avatar>
             </div>
             <div className='user-summary'>
               <div className='full-name'>{user.name}</div>
               <div className='username'>{user.username}</div>
               <div className='user-joined'>
-                Joined {user.joinedAt}
+              {user.joinedAt}
               </div>
             </div>
           </div>
           <div className='user-polls'>
           <Tabs defaultActiveKey="1" centered size='large'>
             <Tabs.TabPane tab={<><AndroidOutlined/><span>{user.pollCount} Polls</span></>} key="1">
-              {/* <PollList username={username} type="USER_CREATED_POLLS" /> */}
+              {<PollList username={username} type="USER_CREATED_POLLS" /> }
             </Tabs.TabPane>
             <Tabs.TabPane tab={<><AndroidOutlined/><span>{user.voteCount} Votes</span></>} key="2">
-              {/* <PollList username={username} type="USER_VOTED_POLLS"/> */}
+              {<PollList username={username} type="USER_VOTED_POLLS"/> }
             </Tabs.TabPane>
           </Tabs>
           </div>

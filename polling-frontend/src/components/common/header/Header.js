@@ -68,7 +68,7 @@ export const Header = () => {
     <Layout.Header className='app-header'>
       <div className='container'>
         <div className='app-name'>
-          <Link to='/'>
+          <Link to='/' className='logo'>
           Who's Right?
           </Link>
         </div>

@@ -25,8 +25,6 @@ const PollList = (props) => {
     isLoading:false
   })
 
-  console.log(polls.currentVotes);
-
   const loadPollList = (page = 0, size = POLL_LIST_SIZE) => {
     let promise;
     if(props.username){
@@ -71,7 +69,7 @@ const PollList = (props) => {
 
   useEffect(()=>{
       loadPollList();
-  },[polls.page, props.isAuthenticated])
+  },[polls.page, authData.isAuthenticated])
 
   const loadMore = () =>{
     setpolls({
@@ -142,14 +140,14 @@ const PollList = (props) => {
       })
     }
       {
-        polls.isLoading && polls.content.length === 0 ? (
+        !polls.isLoading && polls.content.length === 0 ? (
           <div>
               <span>No Polls Found</span>
           </div>
         ):null
       }
       {
-        !polls.isLoading && !polls.last ? (
+        polls.isLoading && !polls.last ? (
           <div className='load-more-polls'>
             <Button type='dashed' onClick={loadMore} disabled={polls.isLoading}>
               <PlusOutlined/> Load more

@@ -9,11 +9,11 @@ export const Layout = () => {
 
   return (
     <AntdLayout className='layout-container'>
-        <Header/>
+        <Header className='header'/>
         <Content className='page-content'>
             <Outlet/>
         </Content>
-        <Footer>Footer</Footer>
+        <Footer className='footer'>Footer</Footer>
     </AntdLayout>
   )
 }

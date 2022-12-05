@@ -1,4 +1,15 @@
+.layout-container{
+    height: 100vh;
+
+}
+ 
 .page-content{
     max-width: 80%;
     margin: 0 auto
+}
+
+.footer{
+    margin:0;
+    height: 15%;
+    background-color: black;
 }
