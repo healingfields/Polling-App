@@ -1,14 +1,22 @@
 import { Layout, Menu } from 'antd'
 import './Header.css'
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MailOutlined, AppstoreOutlined, SettingOutlined, HomeOutlined, QuestionCircleOutlined, PlusCircleOutlined, ProfileOutlined, LogoutOutlined, LoginOutlined, SignalFilled, ProfileFilled} from '@ant-design/icons';
 import Login from '../../presentational/user/login/Login';
 import { AuthContext } from '../../../util/authProvider';
 
 export const Header = () => {
 
-  const {authData} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const {authData, handleLogout} = useContext(AuthContext);
+
+  const onClick = (e) =>{
+    if(e.key=== 'logout'){
+      handleLogout();
+      navigate("/")
+    }
+  }
 
   let menuItems;
   if(authData.isAuthenticated){
@@ -64,7 +72,7 @@ export const Header = () => {
           Who's Right?
           </Link>
         </div>
-        <Menu mode="horizontal" items={menuItems}>
+        <Menu mode="horizontal" items={menuItems} onClick={onClick}>
 
         </Menu>
       </div>

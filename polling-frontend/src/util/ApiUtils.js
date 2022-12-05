@@ -92,8 +92,6 @@ export function checkEmailAvailability(email){
 
 //function that gets the current user
 export function getCurrentUser(){
-    const token = localStorage.getItem(ACCESS_TOKEN)
-    console.log(token);
     if(!localStorage.getItem(ACCESS_TOKEN)){
         return Promise.reject("No access token set");
     }
@@ -118,7 +116,7 @@ export function getUserCreatedPolls(username, page, size){
     size = size || POLL_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL+"users/" + username + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL+"/user/" + username + "/polls?page=" + page + "&size=" + size,
         method: 'GET'
     })
 }
@@ -129,7 +127,7 @@ export function getUserVotedPolls(username, page, size){
     size = size || POLL_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/user/" + username + "/votes?page=" + page + "&size=" + size,
         method: "GET"
     });
 }

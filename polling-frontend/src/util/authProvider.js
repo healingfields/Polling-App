@@ -10,7 +10,7 @@ export const AuthProvider = ({children}) => {
         currentUser:{},
         isLoading:false
     })
-    console.log(authData.currentUser);
+
     
     const handleLogin = (loginRequest) =>{
         login(loginRequest)
