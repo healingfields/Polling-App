@@ -1,5 +1,8 @@
 package ma.showmaker.pollingbackend.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -13,7 +16,7 @@ public class PollResponse {
     private Instant expirationDateTime;
     private Boolean isExpired;
 
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long selectedChoice;
     private Long totalVotes;
 

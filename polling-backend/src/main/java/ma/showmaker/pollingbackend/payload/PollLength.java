@@ -8,6 +8,16 @@ public class PollLength {
 
     private Integer hours;
 
+    private Integer minutes;
+
+    public Integer getMinutes(){
+        return minutes;
+    }
+
+    public void setMinutes(Integer minutes){
+        this.minutes = minutes;
+    }
+
     public Integer getDays() {
         return days;
     }
