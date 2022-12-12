@@ -8,14 +8,22 @@ import { redirect } from 'react-router-dom';
 const {TextArea} = Input;
 
 const daysOptions = [];
-for(let i=1; i<8; i++){   
+for(let i=0; i<8; i++){   
   daysOptions.push({
     label: i,
     value: i
   })
 }
+
+const minutesOptions = [];
+for(let i=0; i<61; i++){   
+  minutesOptions.push({
+    label: i,
+    value: i
+  })
+}
 const hoursOptions = [];
-for(let i=1; i<25; i++){
+for(let i=0; i<25; i++){
   hoursOptions.push({
     label: i,
     value: i
@@ -34,7 +42,8 @@ function NewPoll() {
     }],
     pollLength:{
       days:1,
-      hours:0
+      hours:0,
+      minutes:0
     }
   })
   console.log(poll);
@@ -85,6 +94,16 @@ function NewPoll() {
       pollLength:{
         ...poll.pollLength,
         hours:value
+      }
+    })
+  }
+
+  const handleMinuteChange = (value) => {
+    setpoll({
+      ...poll,
+      pollLength:{
+        ...poll.pollLength,
+        minutes:value
       }
     })
   }
@@ -166,7 +185,16 @@ function NewPoll() {
                 onChange={handleHoursChange}
           />&nbsp;Hours
       </Form.Item>
-
+      <Form.Item >
+        <Select defaultValue="1" 
+                value={poll.pollLength.minutes}
+                style={{width:'85%'}}
+                allowClear
+                options={minutesOptions}
+                name="minutes"
+                onChange={handleMinuteChange}
+                />&nbsp;Minutes
+      </Form.Item>
       <Form.Item>
         <Button type="primary"
                 htmlType="submit"
